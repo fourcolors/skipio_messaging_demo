@@ -4,9 +4,15 @@ import {
 } from 'react-native';
 
 export default class Messages extends Component {
+  static route = {
+    navigationBar: {
+      title: 'Messages'
+    }
+  };
+
   render () {
     return (
-      <Text>messages</Text>
+      <Text>{ this.props.route.params.name }</Text>
     )
   }
 }
