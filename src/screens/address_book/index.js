@@ -4,6 +4,7 @@ import {
   Text,
   View,
   ListView,
+  TouchableHighlight,
 } from 'react-native';
 
 export default class AddressBook extends Component {
@@ -19,7 +20,9 @@ export default class AddressBook extends Component {
 
   renderRow (contact) {
     return (
-      <Text style = {styles.contactName}>{ contact.name }</Text>
+      <TouchableHighlight onPress = {() => console.log('press')} >
+        <Text style = {styles.contactName}>{ contact.name }</Text>
+      </TouchableHighlight>
     )
   }
 
@@ -51,6 +54,7 @@ const styles = StyleSheet.create({
   },
   contactName: {
     padding: 10,
-    fontSize: 23
+    fontSize: 23,
+    backgroundColor: 'white'
   }
 });
