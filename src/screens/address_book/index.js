@@ -23,9 +23,12 @@ export default class AddressBook extends Component {
     )
   }
 
-  renderSeparator () {
+  renderSeparator (sectionID, rowID) {
     return (
-      <View style = {styles.separator} />
+      <View 
+        style = {styles.separator}
+        key = {`${sectionID}-${rowID}`}
+      />
     )
   }
 
