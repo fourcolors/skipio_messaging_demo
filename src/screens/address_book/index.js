@@ -6,8 +6,13 @@ import {
   ListView,
   TouchableHighlight,
 } from 'react-native';
+import { Router } from '../../navigation/router.js'
 
 export default class AddressBook extends Component {
+  constructor (props) {
+    super(props)
+    this.renderRow = this.renderRow.bind(this)
+  }
   static route = {
     navigationBar: {
       title: 'Address Book'
@@ -26,7 +31,7 @@ export default class AddressBook extends Component {
 
   renderRow (contact) {
     return (
-      <TouchableHighlight onPress = {() => console.log('press')} >
+      <TouchableHighlight onPress = {() => this.props.navigator.push(Router.getRoute('messages', contact))} >
         <Text style = {styles.contactName}>{ contact.name }</Text>
       </TouchableHighlight>
     )
