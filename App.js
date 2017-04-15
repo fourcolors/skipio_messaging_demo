@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AddressBook from './src/screens/address_book'
-import { AppLoading } from 'expo'
+import { 
+  AppLoading,
+  Contacts,
+} from 'expo'
 
 export default class App extends Component {
 
   state = {
     isLoading: true,
+    contacts: [],
   };
 
-  render() {
+  componentWillMount () {
+    this.loadContacts()
+  }
+
+  render () {
     if (this.state.isLoading) {
       return <AppLoading />
     }
@@ -17,5 +25,18 @@ export default class App extends Component {
     return (
       <AddressBook />
     );
+  }
+
+  async loadContacts () {
+    const contacts = await Contacts.getContactsAsync([
+      Contacts.PHONE_NUMBERS,
+    ])
+
+    if (contacts.length > 0) {
+      this.setState({
+        isLoading: false,
+        contacts: contacts,
+      })
+    }
   }
 }
