@@ -7,7 +7,6 @@ import {
 } from 'expo'
 
 export default class App extends Component {
-
   state = {
     isLoading: true,
     contacts: [],
@@ -23,7 +22,7 @@ export default class App extends Component {
     }
 
     return (
-      <AddressBook />
+      <AddressBook contacts = { this.state.contacts }/>
     );
   }
 
