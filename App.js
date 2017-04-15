@@ -5,6 +5,13 @@ import {
   AppLoading,
   Contacts,
 } from 'expo'
+import {
+  NavigationProvider,
+  StackNavigation,
+} from '@expo/ex-navigation'
+
+import { Router } from './src/navigation/router.js'
+
 
 export default class App extends Component {
   state = {
@@ -22,7 +29,9 @@ export default class App extends Component {
     }
 
     return (
-      <AddressBook contacts = { this.state.contacts }/>
+      <NavigationProvider router = {Router}>
+        <StackNavigation initialRoute = { Router.getRoute('addressBook', this.state.contacts) } />
+      </NavigationProvider>
     );
   }
 

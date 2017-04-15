@@ -8,10 +8,16 @@ import {
 } from 'react-native';
 
 export default class AddressBook extends Component {
+  static route = {
+    navigationBar: {
+      title: 'Address Book'
+    }
+  };
+
   render() {
     return (
       <ListView 
-        dataSource = { this.dataSourceWrapper(this.props.contacts) }
+        dataSource = { this.dataSourceWrapper(this.props.route.params) }
         renderRow = { this.renderRow }
         renderSeparator = { this.renderSeparator }
       />
