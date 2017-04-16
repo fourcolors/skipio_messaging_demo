@@ -4,10 +4,9 @@ import URI from 'urijs'
 
 
 /**********************************************
- * Handle creating a easily usable uri. Not
- * implementing pagination but if I was, I would 
- * allow for a "default" param attached to the uri
- * that would represent the page/per_page options.
+ * Handle creating a easily usable uri. I'm
+ * setting up for pagination but not implementing
+ * it.
  * *******************************************/
 
 const uri = (resource, defaultParams = {token: API_TOKEN, page: 1, per: 100}) => {
@@ -15,7 +14,38 @@ const uri = (resource, defaultParams = {token: API_TOKEN, page: 1, per: 100}) =>
   return uri.segment(resource).addQuery(defaultParams)
 }
 
-export const getContats () => {
+/*********************************************
+ * Handle response errors and success
+ * ******************************************/
+
+const status = async (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response.json()
+  } else {
+    const error = await response.json()
+    throw Error(error.message)
+  }
+}
+/*********************************************
+ * Handle generation of URI specifics
+ * ******************************************/
+
+const contactsUri = () => {
   const contactsUri = uri('contacts')
   return contactsUri.toString()
+}
+
+/********************************************
+ * Handle fetches
+ * *****************************************/
+
+export const getContacts = () => {
+  return fetch(contactsUri(),
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(status)
 }
