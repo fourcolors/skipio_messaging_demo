@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "jest-expo": "^0.3.0",
+    "react-native-dotenv": "0.0.4",
     "react-native-scripts": "0.0.27",
     "react-test-renderer": "~15.4.1"
   },
