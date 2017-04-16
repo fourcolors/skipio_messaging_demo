@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react'
+import { 
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import AddressBook from './src/screens/address_book'
 import { 
   AppLoading,
@@ -11,7 +15,7 @@ import {
 } from '@expo/ex-navigation'
 
 import { Router } from './src/navigation/router.js'
-
+import { getContacts } from './src/api'
 
 export default class App extends Component {
   state = {
@@ -36,15 +40,14 @@ export default class App extends Component {
   }
 
   async loadContacts () {
-    const contacts = await Contacts.getContactsAsync([
-      Contacts.PHONE_NUMBERS,
-    ])
-
-    if (contacts.length > 0) {
+    try {
+      const contacts = await getContacts()
       this.setState({
         isLoading: false,
-        contacts: contacts,
+        contacts: contacts.data,
       })
+    } catch (e) {
+      console.error(e)
     }
   }
 }

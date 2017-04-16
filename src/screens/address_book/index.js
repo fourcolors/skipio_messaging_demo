@@ -32,7 +32,7 @@ export default class AddressBook extends Component {
   renderRow (contact) {
     return (
       <TouchableHighlight onPress = {() => this.props.navigator.push(Router.getRoute('messages', contact))} >
-        <Text style = {styles.contactName}>{ contact.name }</Text>
+        <Text style = {styles.contactName}>{ contact.full_name }</Text>
       </TouchableHighlight>
     )
   }

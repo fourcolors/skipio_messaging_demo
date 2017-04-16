@@ -9,7 +9,7 @@ import URI from 'urijs'
  * it.
  * *******************************************/
 
-const uri = (resource, defaultParams = {token: API_TOKEN, page: 1, per: 100}) => {
+const uri = (resource, defaultParams = {token: API_TOKEN}) => {
   const uri = new URI(BASE_URL)
   return uri.segment(resource).addQuery(defaultParams)
 }
