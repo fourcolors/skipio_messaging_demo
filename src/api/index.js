@@ -35,12 +35,29 @@ const contactsUri = () => {
   return contactsUri.toString()
 }
 
+const messagesUri = (contact) => {
+  // I should find a better solution but this works for now.
+  const messagesUri = uri(['api', 'v1', 'contacts', `${contact.id}`, 'messages'])
+  return messagesUri.toString()
+}
+
 /********************************************
  * Handle fetches
  * *****************************************/
 
 export const getContacts = () => {
   return fetch(contactsUri(),
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(status)
+}
+
+export const getMessages = (contact) => {
+  return fetch(messagesUri(contact),
     {
       method: 'GET',
       headers: {

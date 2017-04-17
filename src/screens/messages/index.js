@@ -5,21 +5,46 @@ import {
   Text,
   View,
   StyleSheet,
+  ListView,
 } from 'react-native';
+import { getMessages } from '../../api'
+import { 
+  AppLoading,
+} from 'expo'
 
 export default class Messages extends Component {
+  constructor (props) {
+    super(props)
+    this.renderRow = this.renderRow.bind(this)
+    this.loadMessages(props.route.params)
+  }
+
   static route = {
     navigationBar: {
       title: 'Messages'
     }
   };
 
+  state = {
+    isLoading: true,
+    messages: [],
+  };
+
   render () {
+    if (this.state.isLoading) {
+      return <AppLoading />
+    }
+
     return (
       <View style = {styles.messagesContainer}>
         <View style = {styles.messageList}>
-          <Text>Chats go here</Text>
+          <ListView 
+            dataSource = { this.dataSourceWrapper(this.state.messages) }
+            renderRow = { this.renderRow }
+            renderSeparator = { this.renderSeparator }
+          />
         </View>
+
         <View style = {styles.messageBox} >
           <TextInput
             style = {styles.messageInput}
@@ -35,6 +60,40 @@ export default class Messages extends Component {
         </View>
       </View>
     )
+  }
+
+  renderRow (message) {
+    return (
+      <Text>
+        {message.body}
+      </Text>
+    )
+  }
+
+  renderSeparator (sectionID, rowID) {
+    return (
+      <View 
+        style = {styles.separator}
+        key = {`${sectionID}-${rowID}`}
+      />
+    )
+  }
+
+  dataSourceWrapper (messages = []) {
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    return ds.cloneWithRows(messages)
+  }
+
+  async loadMessages (contact) {
+    try {
+      const messages = await getMessages(contact)
+      this.setState({
+        isLoading: false,
+        messages: messages.data,
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
 

@@ -7,7 +7,6 @@ import {
 import AddressBook from './src/screens/address_book'
 import { 
   AppLoading,
-  Contacts,
 } from 'expo'
 import {
   NavigationProvider,
