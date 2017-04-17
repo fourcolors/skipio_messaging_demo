@@ -39,9 +39,9 @@ export default class Messages extends Component {
       <View style = {styles.messagesContainer}>
         <View style = {styles.messageList}>
           <ListView 
+            style = {styles.listView}
             dataSource = { this.dataSourceWrapper(this.state.messages) }
             renderRow = { this.renderRow }
-            renderSeparator = { this.renderSeparator }
           />
         </View>
 
@@ -52,9 +52,7 @@ export default class Messages extends Component {
             returnKeyType = 'send'
             disableFullScreenUI = {true}
           />
-          <TouchableHighlight
-            style = {styles.sendButton}
-          >
+          <TouchableHighlight style = {styles.sendButton} >
             <Text style={styles.send}>SEND</Text>
           </TouchableHighlight>
         </View>
@@ -63,20 +61,17 @@ export default class Messages extends Component {
   }
 
   renderRow (message) {
-    return (
-      <Text>
-        {message.body}
-      </Text>
-    )
-  }
-
-  renderSeparator (sectionID, rowID) {
-    return (
-      <View 
-        style = {styles.separator}
-        key = {`${sectionID}-${rowID}`}
-      />
-    )
+    // I know I can use a class selector helper to change the class vs render components
+    // this way however I didn't want to do another npm install for styling. 
+    if (message.direction === 'inbound') {
+      return (
+        <Text style = {styles.inboundMessage}>{message.body}</Text>
+      )
+    } else {
+      return (
+        <Text style = {styles.outboundMessage}>{message.body}</Text>
+      )
+    }
   }
 
   dataSourceWrapper (messages = []) {
@@ -98,16 +93,40 @@ export default class Messages extends Component {
 }
 
 const styles = StyleSheet.create({
+  listView: {
+    flex: 1
+  },
+  inboundMessage: {
+    flex: 1,
+    padding: 10,
+    fontSize: 14,
+    backgroundColor: 'lightblue',
+    textAlign: 'left'
+  },
+  outboundMessage: {
+    flex: 1,
+    padding: 10,
+    fontSize: 14,
+    backgroundColor: 'lightgreen',
+    textAlign: 'right'
+  },
+  separator: {
+    backgroundColor: 'lightgray',
+    height: 1
+  },
   messageList: {
-    flex: 9
+    flex: 9,
+    alignItems: 'stretch',
+    justifyContent: 'space-between'
   },
   messagesContainer: {
     flex: 1,
-    alignItems: 'flex-end'
+    alignItems: 'stretch',
+    flexDirection: 'column'
   },
   messageBox: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: '#7053AB',
