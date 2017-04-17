@@ -6,6 +6,7 @@ import {
   View,
   StyleSheet,
   ListView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import { getMessages } from '../../api'
 import { 
@@ -45,7 +46,11 @@ export default class Messages extends Component {
           />
         </View>
 
-        <View style = {styles.messageBox} >
+        <KeyboardAvoidingView 
+          style = {styles.messageBox} 
+          behavior = "padding"
+          keyboardVerticalOffset = {-80}
+        >
           <TextInput
             style = {styles.messageInput}
             value = ""
@@ -55,7 +60,7 @@ export default class Messages extends Component {
           <TouchableHighlight style = {styles.sendButton} >
             <Text style={styles.send}>SEND</Text>
           </TouchableHighlight>
-        </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }
