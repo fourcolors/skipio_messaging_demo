@@ -7,8 +7,12 @@ import {
   StyleSheet,
   ListView,
   KeyboardAvoidingView,
+  Dimensions,
 } from 'react-native';
-import { getMessages } from '../../api'
+import { 
+  getMessages,
+  sendMessage
+} from '../../api'
 import { 
   AppLoading,
 } from 'expo'
@@ -29,6 +33,7 @@ export default class Messages extends Component {
   state = {
     isLoading: true,
     messages: [],
+    message: ''
   };
 
   render () {
@@ -37,7 +42,9 @@ export default class Messages extends Component {
     }
 
     return (
-      <View style = {styles.messagesContainer}>
+      <View 
+        style = {styles.messagesContainer}
+      >
         <View style = {styles.messageList}>
           <ListView 
             style = {styles.listView}
@@ -53,11 +60,15 @@ export default class Messages extends Component {
         >
           <TextInput
             style = {styles.messageInput}
-            value = ""
+            value = {this.state.message}
+            onChangeText = {(message) => this.setState({message: message})}
             returnKeyType = 'send'
             disableFullScreenUI = {true}
           />
-          <TouchableHighlight style = {styles.sendButton} >
+          <TouchableHighlight
+            style = {styles.sendButton}
+            onPress = {this.sendMessage.bind(this, this.props.route.params.id)}
+          >
             <Text style={styles.send}>SEND</Text>
           </TouchableHighlight>
         </KeyboardAvoidingView>
@@ -89,7 +100,20 @@ export default class Messages extends Component {
       const messages = await getMessages(contact)
       this.setState({
         isLoading: false,
-        messages: messages.data,
+        messages: messages.data.reverse(),
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  async sendMessage (contactId) {
+    try {
+      await sendMessage([`contact-${contactId}`], this.state.message)
+      const messages = await getMessages(this.props.route.params)
+      this.setState({
+        messages: messages.data.reverse(),
+        message: ''
       })
     } catch (e) {
       console.error(e)

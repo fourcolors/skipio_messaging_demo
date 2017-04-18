@@ -66,3 +66,23 @@ export const getMessages = (contact) => {
     })
     .then(status)
 }
+
+export const sendMessage = (recipients, message) => {
+  const params = {
+    recipients: recipients,
+    message: {
+      body: message
+    }
+  }
+
+  return fetch(uri('messages').toString(),
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+    .then(status)
+}
+ 
